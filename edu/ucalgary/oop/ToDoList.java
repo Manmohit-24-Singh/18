@@ -25,8 +25,9 @@ public class ToDoList implements IToDoList {
         Iterator<Task> iter = this.toDoList.iterator();
 
         while (iter.hasNext()) {
-            if (iter.next().getId() == taskId) {
-                iter.next().setIsCompleted(true);
+            Task currentTask = iter.next();
+            if (currentTask.getId().equals(taskId)) {
+                currentTask.setIsCompleted(true);
             }
         }
     }
@@ -37,8 +38,9 @@ public class ToDoList implements IToDoList {
         Iterator<Task> iter = this.toDoList.iterator();
 
         while (iter.hasNext()) {
-            if (iter.next().getId() == taskId) {
-                toDoList.remove(iter.next());
+            Task currentTask = iter.next();
+            if (currentTask.getId().equals(taskId)) {
+                iter.remove();
             }
         }
     }
@@ -49,10 +51,11 @@ public class ToDoList implements IToDoList {
         Iterator<Task> iter = this.toDoList.iterator();
 
         while (iter.hasNext()) {
-            if (iter.next().getId() == taskId) {
-                iter.next().setId(taskId);
-                iter.next().setTitle(title);
-                iter.next().setIsCompleted(isCompleted);
+            Task currentTask = iter.next();
+            if (currentTask.getId().equals(taskId)) {
+                // currentTask.setId(taskId);
+                currentTask.setTitle(title);
+                currentTask.setIsCompleted(isCompleted);
             }
         }
     }
@@ -64,11 +67,22 @@ public class ToDoList implements IToDoList {
 
     public void updateListHistory() {
         List<Task> currentList = this.listTasks();
-        this.listHistory.push(currentList);
+        List<Task> currentListCopy = new ArrayList<>();
+
+        Iterator<Task> iter = currentList.iterator();
+
+        while (iter.hasNext()) {
+            Task currentTask = iter.next();
+            currentListCopy.add(currentTask.copy());
+        }
+
+        this.listHistory.push(currentListCopy);
     }
 
     public void undo() {
-        this.toDoList = this.listHistory.pop();
+        if (!this.listHistory.isEmpty()) {
+            this.toDoList = this.listHistory.pop();
+        }
     }
 
 }
