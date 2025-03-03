@@ -6,13 +6,18 @@ import java.util.Objects;
 //• You must implement a copy method for deep copying task objects.
 
 public class Task {
-
     private String id;
     private String title;
     private boolean isCompleted;
 
 
     // Constructor
+    public Task(String id, String title){
+        this.id = id;
+        this.title = title;
+        this.isCompleted = false;
+    }
+
     public Task(String id, String title, boolean isCompleted){
         this.id = id;
         this.title = title;
@@ -28,6 +33,9 @@ public class Task {
         return this.title;
     }
     public boolean getIsCompleted(){
+        return this.isCompleted;
+    }
+    public boolean isCompleted(){
         return this.isCompleted;
     }
 
