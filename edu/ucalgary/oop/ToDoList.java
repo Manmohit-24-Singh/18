@@ -9,36 +9,53 @@ package edu.ucalgary.oop;
 import java.util.*;
 
 public class ToDoList implements IToDoList {
-    private List<Task> toDoList;
-    private Stack<List<Task>> listHistory;
+    private List<Task> toDoList = new ArrayList<>();
+    private Stack<List<Task>> listHistory = new Stack<>();
 
-    
+
     public void addTask(Task taskToAdd) {
         updateListHistory();
 
         this.toDoList.add(taskToAdd);
     }
 
-    public void completeTask(String id) {
+    public void completeTask(String taskId) {
         updateListHistory();
 
         Iterator<Task> iter = this.toDoList.iterator();
 
         while (iter.hasNext()) {
-            if (iter.next().getId() == id) {
+            if (iter.next().getId() == taskId) {
                 iter.next().setIsCompleted(true);
             }
         }
     }
 
-    public void deleteTask(String taskToDelete) {
+    public void deleteTask(String taskId) {
         updateListHistory();
 
-        this.toDoList.remove(taskToDelete);
+        Iterator<Task> iter = this.toDoList.iterator();
+
+        while (iter.hasNext()) {
+            if (iter.next().getId() == taskId) {
+                toDoList.remove(iter.next());
+            }
+        }
     }
 
-    public void editTask(String id, String title, boolean isCompleted) {}
-    // need updateListHistory(), edit stuff
+    public void editTask(String taskId, String title, boolean isCompleted) {
+        updateListHistory();
+
+        Iterator<Task> iter = this.toDoList.iterator();
+
+        while (iter.hasNext()) {
+            if (iter.next().getId() == taskId) {
+                iter.next().setId(taskId);
+                iter.next().setTitle(title);
+                iter.next().setIsCompleted(isCompleted);
+            }
+        }
+    }
 
 
     public List<Task> listTasks() {
@@ -51,6 +68,7 @@ public class ToDoList implements IToDoList {
     }
 
     public void undo() {
+        this.toDoList = this.listHistory.pop();
     }
 
 }
